@@ -2,11 +2,17 @@ const request = require("supertest")
 const app = require('../app')
 
 const BASE_URL = '/api/v1/users'
+const user = { 
+    firstName: "Grabiel",
+    lastName: "Martinez",
+    email: "gabriel@gmail.com",
+    password: "1234",
+    phone: "12345678"
+}
 let TOKEN
 let TokenUserLogged
 let userId
 
-//? 1-modificar update (para el password, email, phone)
 
 beforeAll(async()=> {
     const user = {
@@ -21,13 +27,6 @@ beforeAll(async()=> {
     TOKEN = res.body.token
 })
 
-const user = { 
-    firstName: "Grabiel",
-    lastName: "Martinez",
-    email: "gabriel@gmail.com",
-    password: "1234",
-    phone: "12345678"
-}
 
 test("POST ->  BASE_URL, should return statusCode 201, and res.body.firstName === user.firstName", async() => {
 
