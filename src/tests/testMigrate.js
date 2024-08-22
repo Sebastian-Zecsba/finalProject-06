@@ -1,6 +1,7 @@
 require('../models')
 const sequelize = require("../utils/connection");
 const createCategory = require('./createData/categoryCreate');
+const productCreate = require('./createData/productCreate');
 const userCreate = require('./createData/userCreate');
 
 const testMigrate = async()=>{
@@ -10,6 +11,7 @@ const testMigrate = async()=>{
         console.log('DB reset ✅');
         await userCreate() //introducimos un usuario
         await createCategory() //introducimos una categoria
+        await productCreate()
         process.exit()
     }catch(error){
         console.error(error);
