@@ -13,7 +13,6 @@ let TOKEN
 let TokenUserLogged
 let userId
 
-
 beforeAll(async()=> {
     const user = {
         email: "sebastian@correo.com",
@@ -57,16 +56,36 @@ test("GET -> BASE_URL, should return statusCode 200, and res.body.length === 2",
 
 test("POST -> BASE_URL/login, should return statusCode 200, and res.body.user.email === user.email", async() => {
 
-    const user = { 
+    const hists = { 
         email: "gabriel@gmail.com",
         password: "1234"
     }
 
     const res = await request(app)
         .post(`${BASE_URL}/login`)
-        .send(user)
+        .send(hists)
 
     TokenUserLogged = res.body.token
+
+    expect(res.statusCode).toBe(200)
+    expect(res.body).toBeDefined()
+    expect(res.body.user).toBeDefined()
+    expect(res.body.token).toBeDefined()
+    expect(res.body.user.email).toBe(hists.email)
+})
+
+test("POST -> BASE_URL/login, should return statusCode 401", async() => {
+    const hists = { 
+        email: "gabriel@gmail.com",
+        password: "invalidPassword"
+    }
+
+    const res = await request(app)
+    .post(`${BASE_URL}/login`)
+    .send(hists)
+
+    expect(res.statusCode).toBe(401)
+
 })
 
 test("PUT -> BASE_URL/userId, should return statusCode 200, and res.body.firstName === userUpdate.firstName", async() => {
