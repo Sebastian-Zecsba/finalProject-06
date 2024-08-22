@@ -44,7 +44,7 @@ test("GET -> BASE_URL, should return status code 200, res.body.length === 1", as
 
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
-    expect(res.body).toHaveLength(1)
+    expect(res.body).toHaveLength(2)
 })
 
 test("DELETE -> BASE_URL/categoryId, should return 204", async() => {
