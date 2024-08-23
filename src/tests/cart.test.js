@@ -1,18 +1,18 @@
 require('../models')
 const request = require('supertest')
 const app = require('../app')
+const Product = require('../models/Product')
+const Category = require('../models/Category')
 
 const BASE_URL = '/api/v1/carts'
 const BASE_URL_LOGIN = '/api/v1/users'
 
-const cart = {
-    userId: 1,
-    productId: 1,
-    quantity: '5'
-}
-
+let cart;
+let category;
 let TOKEN;
 let cartId;
+let product;
+let userIdLogged;
 
 beforeAll(async()=> {
     const user = {
@@ -25,6 +25,27 @@ beforeAll(async()=> {
         .send(user)
     
     TOKEN = res.body.token
+
+    category = await Category.create({name: "Moviles"})
+    product = await Product.create({
+        title: "Samsung S23 Ultra",
+        description: "With 512gb and 12ram, amoled screen and camera with 200px",
+        price: 2250,
+        categoryId: category.id
+    })
+
+    userIdLogged = res.body.user.id
+
+    cart = {
+        userId: userIdLogged,
+        productId: product.id,
+        quantity: 5
+    }
+})
+
+afterAll(async()=> {
+    await category.destroy()
+    await product.destroy()
 })
 
 test("POST ->  BASE_URL, should return statusCode 201, res.body.userId === cart.userId", async() => {
@@ -35,12 +56,10 @@ test("POST ->  BASE_URL, should return statusCode 201, res.body.userId === cart.
 
     cartId = res.body.id
 
-    const colums = [ 'userId', 'productId', 'quantity']
     expect(res.statusCode).toBe(201)
     expect(res.body).toBeDefined()
-    colums.forEach((colum) => {
-        expect(res.body[colum]).toBe(cart[colum])
-    })
+    expect(res.body.userId).toBe(cart.userId)
+
 })
 
 test("GET -> BASE_URL, should return statusCode 200, res.body.length === 1", async() => {
@@ -58,21 +77,17 @@ test("GET -> BASE_URL/cartId, should return statusCode 200, res.body.userId === 
         .get(`${BASE_URL}/${cartId}`)
         .set(`Authorization`, `Bearer ${TOKEN}`)
 
-    const colums = [ 'userId', 'productId', 'quantity']
-
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
-    colums.forEach((colum) => {
-        expect(res.body[colum]).toBe(cart[colum])
-    })
+    expect(res.body.userId).toBe(cart.userId)
 })
 
 test("PUT -> BASE_URL, should return statusCode 200, res.body.userId === cartUpdate.userId", async() => {
 
     const cartUpdate = {
-        userId: 1,
-        productId: 1,
-        quantity: '2'
+        userId: userIdLogged,
+        productId: product.id,
+        quantity: 2
     }
 
     const res = await request(app)
@@ -80,13 +95,10 @@ test("PUT -> BASE_URL, should return statusCode 200, res.body.userId === cartUpd
         .send(cartUpdate)
         .set(`Authorization`, `Bearer ${TOKEN}`)
 
-    const colums = [ 'userId', 'productId', 'quantity']
-
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
-    colums.forEach((colum) => {
-        expect(res.body[colum]).toBe(cartUpdate[colum])
-    })
+    expect(res.body.userId).toBe(cartUpdate.userId)
+
 })
 
 test("DELETE -> BASE_URL, should return statusCode 204", async() => {

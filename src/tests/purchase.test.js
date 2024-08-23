@@ -2,12 +2,19 @@ require('../models')
 const request = require('supertest')
 const app = require('../app')
 const Cart = require('../models/Cart')
+const Product = require('../models/Product')
+const Category = require('../models/Category')
+const Purchase = require('../models/Purchase')
 
 const BASE_URL = '/api/v1/purchases'
 const BASE_URL_LOGIN = '/api/v1/users'
 
 let TOKEN;
-
+let purchase;
+let userIdLogged;
+let category
+let product
+let cart
 beforeAll(async()=> {
     const user = {
         email: "sebastian@correo.com",
@@ -19,17 +26,39 @@ beforeAll(async()=> {
         .send(user)
     
     TOKEN = res.body.token
-})
+    userIdLogged = res.body.user.id
 
-test("POST -> BASE_URL, should return statusCode 201, res.body.userId === purchase.userId", async() => {
+    category = await Category.create({name: "Moviles"})
+    product = await Product.create({
+        title: "Samsung S23 Ultra",
+        description: "With 512gb and 12ram, amoled screen and camera with 200px",
+        price: 2250,
+        categoryId: category.id
+    })
+    cart = await Cart.create({
+        userId: userIdLogged,
+        productId: product.id,
+        quantity: 5
+    })
 
-    const cart = await Cart.findAll()
-    const { userId, productId, quantity } = cart[0].dataValues
-    const purchase = {
+    const { userId, productId, quantity } = cart
+
+    purchase = {
         userId,
         productId,
         quantity
     }
+})
+
+afterAll(async()=> {
+    //! Elimina las compras que dependen del producto
+    await Purchase.destroy({ where: { productId: product.id } });
+    await cart.destroy();
+    await product.destroy();
+    await category.destroy();
+})
+
+test("POST -> BASE_URL, should return statusCode 201, res.body.userId === purchase.userId", async() => {
 
     const colums = ['userId', 'productId', 'quantity']
 

@@ -1,19 +1,15 @@
 require('../models')
 const request = require('supertest')
 const app = require('../app')
+const Category = require('../models/Category')
 
 const BASE_URL = '/api/v1/products'
 const BASE_URL_LOGIN = '/api/v1/users'
 
-const product = {
-    title: "Samsung S23 Ultra",
-    description: "With 512gb and 12ram, amoled screen and camera with 200px",
-    price: 2250,
-    categoryId: 1
-}
-
+let product;
 let TOKEN;
 let productId;
+let category;
 
 beforeAll(async() => {
     const user = {
@@ -27,6 +23,18 @@ beforeAll(async() => {
     
     TOKEN = res.body.token
 
+    category = await Category.create({name: "Moviles"})
+
+    product = {
+        title: "Samsung S23 Ultra",
+        description: "With 512gb and 12ram, amoled screen and camera with 200px",
+        price: 2250,
+        categoryId: category.id
+    }
+})
+
+afterAll(async()=> {
+    await category.destroy()
 })
 
 test("POST -> BASE_URL, should return statusCode 201, res.body.title === product.tile", async() => {
@@ -54,7 +62,7 @@ test("GET -> BASE_URL, should return statusCode 200, res.body.length === 1", asy
     
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
-    expect(res.body).toHaveLength(2)
+    expect(res.body).toHaveLength(1)
 })
 
 test("GET -> BASE_URL/productId, should return statusCode 200, res.body.title === product.title", async() => {
