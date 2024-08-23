@@ -70,6 +70,12 @@ test("GET -> BASE_URL, should return statusCode 200, res.body.length === 1", asy
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
     expect(res.body).toHaveLength(1)
+
+    //TODO: 1:n
+    expect(res.body[0].userId).toBeDefined()
+    expect(res.body[0].userId).toBe(userIdLogged)
+    expect(res.body[0].productId).toBeDefined()
+    expect(res.body[0].productId).toBe(product.id)
 })
 
 test("GET -> BASE_URL/cartId, should return statusCode 200, res.body.userId === cart.userId", async() => {
@@ -80,6 +86,12 @@ test("GET -> BASE_URL/cartId, should return statusCode 200, res.body.userId === 
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
     expect(res.body.userId).toBe(cart.userId)
+
+    //TODO: 1:n
+    expect(res.body.userId).toBeDefined()
+    expect(res.body.userId).toBe(userIdLogged)
+    expect(res.body.productId).toBeDefined()
+    expect(res.body.productId).toBe(product.id)
 })
 
 test("PUT -> BASE_URL, should return statusCode 200, res.body.userId === cartUpdate.userId", async() => {
@@ -98,7 +110,11 @@ test("PUT -> BASE_URL, should return statusCode 200, res.body.userId === cartUpd
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
     expect(res.body.userId).toBe(cartUpdate.userId)
+    expect(res.body.quantity).toBe(cartUpdate.quantity)
 
+    //TODO: 1:n
+    expect(res.body.userId).toBeDefined()
+    expect(res.body.userId).toBe(userIdLogged)
 })
 
 test("DELETE -> BASE_URL, should return statusCode 204", async() => {

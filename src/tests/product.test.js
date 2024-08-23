@@ -52,7 +52,7 @@ test("POST -> BASE_URL, should return statusCode 201, res.body.title === product
     colums.forEach((colum) => {
         expect(res.body[colum]).toBe(product[colum])
     })
-    
+
 })
 
 test("GET -> BASE_URL, should return statusCode 200, res.body.length === 1", async() => {
@@ -63,6 +63,10 @@ test("GET -> BASE_URL, should return statusCode 200, res.body.length === 1", asy
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
     expect(res.body).toHaveLength(1)
+
+    //TODO: 1:n
+    expect(res.body[0].category.id).toBeDefined()
+    expect(res.body[0].category.id).toBe(category.id)
 })
 
 test("GET -> BASE_URL/productId, should return statusCode 200, res.body.title === product.title", async() => {
@@ -78,6 +82,10 @@ test("GET -> BASE_URL/productId, should return statusCode 200, res.body.title ==
     colums.forEach((colum) => {
         expect(res.body[colum]).toBe(product[colum])
     })
+
+    //TODO: 1:n
+    expect(res.body.category.id).toBeDefined()
+    expect(res.body.category.id).toBe(category.id)
 })
 
 test("PUT -> BASE_URL/productId, should return statusCode 200, res.body.title === productUpdated.tile", async() => {
@@ -100,6 +108,10 @@ test("PUT -> BASE_URL/productId, should return statusCode 200, res.body.title ==
     colums.forEach((colum) => {
         expect(res.body[colum]).toBe(productUpdated[colum])
     })
+
+    //TODO: 1:n
+    expect(res.body.categoryId).toBeDefined()
+    expect(res.body.categoryId).toBe(category.id)
 })
 
 test("DELETE -> BASE_URL/productId, should return statusCode 204", async() => {

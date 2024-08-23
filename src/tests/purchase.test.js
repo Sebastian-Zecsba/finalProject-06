@@ -83,4 +83,10 @@ test("GET -> BASE_URL, should return statusCode 200, req.body.length === 1", asy
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
     expect(res.body).toHaveLength(1)
+
+    //TODO: 1:n
+    expect(res.body[0].userId).toBeDefined()
+    expect(res.body[0].userId).toBe(userIdLogged)
+    expect(res.body[0].productId).toBeDefined()
+    expect(res.body[0].productId).toBe(product.id)
 })
