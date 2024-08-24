@@ -103,7 +103,7 @@ test("PUT -> BASE_URL, should return statusCode 200, res.body.userId === cartUpd
     }
 
     const res = await request(app)
-        .put(BASE_URL)
+        .put(`${BASE_URL}/${cartId}`)
         .send(cartUpdate)
         .set(`Authorization`, `Bearer ${TOKEN}`)
 
@@ -119,7 +119,7 @@ test("PUT -> BASE_URL, should return statusCode 200, res.body.userId === cartUpd
 
 test("DELETE -> BASE_URL, should return statusCode 204", async() => {
     const res = await request(app)
-        .delete(BASE_URL)
+        .delete(`${BASE_URL}/${cartId}`)
         .set(`Authorization`, `Bearer ${TOKEN}`)
         
     expect(res.statusCode).toBe(204)

@@ -7,7 +7,7 @@ const Purchase = require('./Purchase')
 Product.belongsTo(Category)
 Category.hasMany(Product)
 
-//? Tabla pivot Cart
+//? Tabla Cart
 
 Cart.belongsTo(User)
 User.hasMany(Cart)
@@ -15,7 +15,7 @@ User.hasMany(Cart)
 Cart.belongsTo(Product)
 Product.hasMany(Cart)
 
-//? Tabla pivot Purchase
+//? Tabla Purchase
 
 Purchase.belongsTo(User)
 User.hasMany(Purchase)

@@ -1,6 +1,7 @@
 require('../models')
 const request = require('supertest')
 const app = require('../app')
+
 const Cart = require('../models/Cart')
 const Product = require('../models/Product')
 const Category = require('../models/Category')

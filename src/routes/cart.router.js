@@ -6,10 +6,10 @@ const routerCart = express.Router();
 routerCart.route('/')
     .get(getAll)
     .post(create)
-    .delete(remove)
-    .put(update)
-
+    
 routerCart.route('/:id')
     .get(getOne)
-
+    .delete(remove)
+    .put(update)
+    
 module.exports = routerCart;
