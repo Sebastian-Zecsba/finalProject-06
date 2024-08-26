@@ -5,13 +5,15 @@ const routerProduct = require('./product.router');
 const routerCart = require('./cart.router');
 const { verifyJwt } = require('../utils/verify');
 const routerPurchase = require('./purchase.router');
+const routerProductImg = require('./productImg.router');
 const router = express.Router();
 
 // colocar las rutas aquí
 router.use('/users', routerUser)
 router.use('/categories', routerCategory)
 router.use('/products', routerProduct)
-router.use('/carts', verifyJwt, routerCart)
+router.use('/cart', verifyJwt, routerCart)
 router.use('/purchases', verifyJwt, routerPurchase)
+router.use('/productImg', verifyJwt, routerProductImg)
 
 module.exports = router;

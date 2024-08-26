@@ -3,6 +3,7 @@ const Purchase = require('../models/Purchase');
 const Product = require('../models/Product');
 const Cart = require('../models/Cart');
 const Category = require('../models/Category');
+const ProductImg = require('../models/ProductImg');
 
 const getAll = catchError(async(req, res) => {
     const userId = req.user.id
@@ -14,6 +15,9 @@ const getAll = catchError(async(req, res) => {
             include: [{
                 model: Category,
                 attributes: ['name']
+            }],
+            include: [{
+                model: ProductImg
             }]
 
         }]});

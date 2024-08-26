@@ -4,7 +4,7 @@ const app = require('../app')
 const Product = require('../models/Product')
 const Category = require('../models/Category')
 
-const BASE_URL = '/api/v1/carts'
+const BASE_URL = '/api/v1/cart'
 const BASE_URL_LOGIN = '/api/v1/users'
 
 let cart;
