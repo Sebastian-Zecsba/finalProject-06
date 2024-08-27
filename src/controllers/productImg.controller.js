@@ -31,10 +31,11 @@ const getAll = catchError(async(req, res) => {
 
 //TODO: With Cloudinary
 const create = catchError(async(req, res) => {
+  const { productId } = req.body
   const images = req.files.map(file => {
       const url = req.protocol + "://" + req.headers.host + "/uploads/" + file.filename;
       const filename = file.filename;
-      return { url, filename };
+      return { url, filename, productId };
   })
   const result = await ProductImg.bulkCreate(images);
   return res.status(201).json(result);
