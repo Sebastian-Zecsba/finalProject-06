@@ -121,6 +121,6 @@ test("DELETE -> BASE_URL, should return statusCode 204", async() => {
     const res = await request(app)
         .delete(`${BASE_URL}/${cartId}`)
         .set(`Authorization`, `Bearer ${TOKEN}`)
-        
+
     expect(res.statusCode).toBe(204)
 })

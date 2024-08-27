@@ -35,7 +35,7 @@ const create = catchError(async(req, res) => {
   const { productId } = req.body
   const { url, public_id } = await uploadToCloudinary(path, filename);
   const body = { url, filename: public_id, productId}
-  const image = await ProductImg.create(body);
+  const image = await ProductImg.bulkCreate(body);
   return res.status(201).json(image);
 });
 

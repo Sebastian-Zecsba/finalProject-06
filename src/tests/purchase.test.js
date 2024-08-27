@@ -52,11 +52,8 @@ beforeAll(async()=> {
 })
 
 afterAll(async()=> {
-    //! Elimina las compras que dependen del producto
+    await category.destroy()
     await Purchase.destroy({ where: { productId: product.id } });
-    await cart.destroy();
-    await product.destroy();
-    await category.destroy();
 })
 
 test("POST -> BASE_URL, should return statusCode 201, res.body.userId === purchase.userId", async() => {
@@ -65,7 +62,6 @@ test("POST -> BASE_URL, should return statusCode 201, res.body.userId === purcha
 
     const res = await request(app)
         .post(BASE_URL)
-        .send(purchase)
         .set(`Authorization`, `Bearer ${TOKEN}`)
 
     expect(res.statusCode).toBe(201)
@@ -80,7 +76,7 @@ test("GET -> BASE_URL, should return statusCode 200, req.body.length === 1", asy
     const res = await request(app)
         .get(BASE_URL)
         .set(`Authorization`, `Bearer ${TOKEN}`)
-
+    
     expect(res.statusCode).toBe(200)
     expect(res.body).toBeDefined()
     expect(res.body).toHaveLength(1)
